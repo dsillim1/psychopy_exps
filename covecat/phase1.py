@@ -1,2 +1,2 @@
 ## DISPLAY WELCOME AND GENERAL INSTRUCTION SCREEN
-fx.transition(win, instructions, data)
+fx.transition(win, text, data)

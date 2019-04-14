@@ -1,15 +1,14 @@
 # IMPORT DEPENDENCIES
-from psychopy import gui, core, visual, event
 import os
+import psychopy as psy
 import pandas as pd
-import random as rnd
 from time import strftime
 
 # COLLECT USER/EXPERIMENT METADATA
 
 def prompt():
 
-    myDlg = gui.Dlg(title = 'Cove Cat')
+    myDlg = psy.gui.Dlg(title = 'Cove Cat')
     myDlg.addText('Subject Info')
     myDlg.addField('ID:')
     myDlg.addField('Condition:', choices=[0,1])
@@ -17,7 +16,7 @@ def prompt():
     
     # quit if participant does not click 'ok' or pnum blank
     if not myDlg.OK or str(myDlg.data[0]) == '':
-        core.quit()
+        psy.core.quit()
     else:
         pnum = str(myDlg.data[0])
         cnd = myDlg.data[1]
@@ -42,7 +41,9 @@ def save_data(data, subject_dir, pnum, cnd):
 
 def transition(win, instructions, data):
 
-    hello = 'Thank you for participating in the following experiment...\n\nWhen you are ready to get started, please press the SPACEBAR.'
+    phase1 = 'Thank you for participating in the following experiment...\n\nWhen you are ready to get started, please press the SPACEBAR.'
+
+    phase2 = '...'
 
     test = 'For this next task...'
     
@@ -51,8 +52,10 @@ def transition(win, instructions, data):
     instructions.setPos([0, 100])
 
     if len(data) == 0:
-        instructions.setText(hello)
-    elif len(data) < 45:
+        instructions.setText(phase1)
+    elif len(data) < 25:
+        instructions.setText(phase2):
+    elif len(data) < 65:
         instructions.setText(test)
     else:
         instructions.setText(goodbye)
@@ -60,7 +63,69 @@ def transition(win, instructions, data):
     instructions.draw()
     win.flip()
 
-    resume = event.waitKeys(keyList=['space', 'escape'])
+    resume = psy.event.waitKeys(keyList=['space', 'escape'])
     if resume[0][0] == 'escape':
         win.close()
-        core.quit()
+        psy.core.quit()
+
+
+def draw_all(win, category, stim, text, resp_labels, boxes, cursor, feedback = True):
+
+    pressed = False
+    #event.clearEvents()
+    #cursor.clickReset()
+    
+    text.setPos([0, 275])
+    text.setText('Is the following .... a ... or ...?')
+    text.draw()
+
+    xcord = [-250, 250]
+    rnd.shuffle(xcord)
+
+    for options in range(len(resp_labels)):
+        boxes[options].setPos([xcord[options], -300])
+        boxes[options].draw()
+        text.setText(resp_labels[options])
+        text.setPos([xcord[options], -300])
+        text.draw()
+
+    stim.setPos([0, 0])
+    stim.draw()
+   
+    win.flip()
+
+    while pressed == False:
+        
+        if event.getKeys(keyList='escape'):
+            win.close()
+            core.quit()
+            
+        elif cursor.isPressedIn(boxes[0], buttons=[0,1]):
+            
+            result = 1
+
+            if feedback == True:
+
+                text.setText('Correct! This ... is a(n) {}.'.format(category))
+                text.draw()
+                stim.draw()
+                win.flip()
+                core.wait(3)
+
+            pressed = True
+        
+        elif cursor.isPressedIn(boxes[1], buttons=[0,1]):
+            
+            result = 0
+
+            if feedback == True:
+
+                text.setText('Correct! This ... is a(n) {}.'.format(category))
+                text.draw()
+                stim.draw()
+                win.flip()
+                core.wait(3)
+
+            pressed = True
+
+    return result
