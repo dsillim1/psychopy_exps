@@ -1,6 +1,6 @@
 # IMPORT DEPENDENCIES
+from psychopy import core, event, gui
 import os
-import psychopy as psy
 import pandas as pd
 from time import strftime
 
@@ -8,7 +8,7 @@ from time import strftime
 
 def prompt():
 
-    myDlg = psy.gui.Dlg(title = 'Cove Cat')
+    myDlg = gui.Dlg(title = 'Cove Cat')
     myDlg.addText('Subject Info')
     myDlg.addField('ID:')
     myDlg.addField('Condition:', choices=[0,1])
@@ -16,7 +16,7 @@ def prompt():
     
     # quit if participant does not click 'ok' or pnum blank
     if not myDlg.OK or str(myDlg.data[0]) == '':
-        psy.core.quit()
+        core.quit()
     else:
         pnum = str(myDlg.data[0])
         cnd = myDlg.data[1]
@@ -63,10 +63,10 @@ def transition(win, instructions, data):
     instructions.draw()
     win.flip()
 
-    resume = psy.event.waitKeys(keyList=['space', 'escape'])
+    resume = event.waitKeys(keyList=['space', 'escape'])
     if resume[0][0] == 'escape':
         win.close()
-        psy.core.quit()
+        core.quit()
 
 
 def draw_all(win, category, stim, text, resp_labels, boxes, cursor, feedback = True):
