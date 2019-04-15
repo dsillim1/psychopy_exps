@@ -69,14 +69,14 @@ def transition(win, instructions, data):
         core.quit()
 
 
-def draw_all(win, category, stim, text, resp_labels, boxes, cursor, feedback = True):
+def draw_all(win, stim, text, resp_labels, boxes, cursor, feedback = True):
 
     pressed = False
     #event.clearEvents()
     #cursor.clickReset()
     
     text.setPos([0, 275])
-    text.setText('Is the following .... a ... or ...?')
+    text.setText('Is the following ... a ... or ...?')
     text.draw()
 
     xcord = [-250, 250]
@@ -106,7 +106,7 @@ def draw_all(win, category, stim, text, resp_labels, boxes, cursor, feedback = T
 
             if feedback == True:
 
-                text.setText('Correct! This ... is a(n) {}.'.format(category))
+                text.setText('Correct! This ... is a(n) {}.'.format(resp_labels[0]))
                 text.draw()
                 stim.draw()
                 win.flip()
@@ -120,7 +120,7 @@ def draw_all(win, category, stim, text, resp_labels, boxes, cursor, feedback = T
 
             if feedback == True:
 
-                text.setText('Correct! This ... is a(n) {}.'.format(category))
+                text.setText('Correct! This ... is a(n) {}.'.format(resp_labels[0]))
                 text.draw()
                 stim.draw()
                 win.flip()

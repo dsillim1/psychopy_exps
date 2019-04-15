@@ -12,7 +12,6 @@ subject_dir = os.path.join(os.getcwd(), 'data')
 # DEFINE PSYCHOPY ENVIRONMENT VARIABLES
 
 win = visual.Window(fullscr=True, units='pix', color=(1, 1, 1))
-stim = visual.Rect(win, width=0, height=0) # fill
 text = visual.TextStim(win, text='', font='High Tower Text', height=30, wrapWidth=800, color=(0, 0, 0))
 cursor = event.Mouse(visible=True, newPos=None, win=win)
 
