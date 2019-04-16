@@ -1,23 +1,29 @@
-# IMPORT MODULES/PACKAGES
-import pandas as pd
-
 # DISPLAY WELCOME AND GENERAL INSTRUCTION SCREEN
 fx.transition(win, text, data)
 
 # SET PHASE VARIABLE
-phase = 'classification_1'
+phase = 'classification_2'
 n_blocks = range(1,3)
 
 # DEFINE CATEGORIES, STIM
 
 ## create list with all possible stim categories
-class_list = sorted(['A','B']*6)
+class_list = sorted(['A','C']*10)
 
 ## create dictionary with corresponding stimulus values
+
+if cnd==0: #control
+    dims=[]
+    rgb=[]
+else:
+    dim=[]
+    rgb=[]
+
+
 stim_dict = {'correct_category': class_list,
              'incorrect_category': class_list[::-1],
-             'dimensions': [40, 50, 60, 80, 100, 110, 120, 140, 160, 180, 190, 200],
-             'rgb': [-0.8, -0.7, -0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2, 0.4, 0.6, 0.8]}
+             'dimensions': dims,
+             'rgb': rgb}
 
 ## dictionary to dataframe
 stim_frame = pd.DataFrame(stim_dict)
