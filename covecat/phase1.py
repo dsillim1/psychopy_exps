@@ -1,6 +1,5 @@
 # IMPORT MODULES/PACKAGES
 import pandas as pd
-import random as rnd
 
 # DISPLAY WELCOME AND GENERAL INSTRUCTION SCREEN
 fx.transition(win, text, data)
@@ -12,13 +11,13 @@ n_blocks = range(1,3)
 # DEFINE CATEGORIES, STIM
 
 ## create list with all possible stim categories
-class_list = sorted(['A','B']*4)
+class_list = sorted(['A','B']*6)
 
 ## create dictionary with corresponding stimulus values
 stim_dict = {'correct_category': class_list,
              'incorrect_category': class_list[::-1],
-             'dimensions': [40, 60, 80, 100, 120, 140, 160, 180],
-             'rgb': [40, 60, 80, 120, 140, 160, 180, 200]}
+             'dimensions': [40, 50, 60, 80, 100, 110, 120, 140, 160, 180, 190, 200],
+             'rgb': [-0.8, -0.7, -0.6, -0.4, -0.2, -0.1, 0, 0.1, 0.2, 0.4, 0.6, 0.8]}
 
 ## dictionary to dataframe
 stim_frame = pd.DataFrame(stim_dict)
@@ -36,7 +35,7 @@ for block in n_blocks:
                 shading = stim_frame.loc[n_trials, 'rgb']
 
                 ## create stim
-                stim = visual.Rect(win, units='pix', width=shape, height=shape ,fillColor=rgb, lineColor=0)
+                stim = visual.Rect(win, units='pix', width=shape, height=shape, fillColorSpace='rgb', lineColorSpace='rgb', fillColor=shading, lineColor=shading)
 
                 ## assign labels
                 correct = stim_frame.loc[n_trials, 'correct_category']
@@ -47,5 +46,4 @@ for block in n_blocks:
                 result = fx.draw_all(win, stim, text, resp_labels, boxes, cursor)
         
                 # update datafile w/trial response
-                data.loc[data.shape[0]] = [pnum, cnd, phase, block, n_trials+1, correct, str(shape) + str(shading), result] 
-        
+                data.loc[data.shape[0]] = [pnum, cnd, phase, block, n_trials+1, correct, str(shape) + str(shading), result]
