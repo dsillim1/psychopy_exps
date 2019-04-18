@@ -117,7 +117,7 @@ def draw_all(win, stim, text, resp_labels, boxes, cursor):
             
             result=0
 
-            text.setText('Inorrect! This ... is a(n) {}.'.format(resp_labels[0]))
+            text.setText('Incorrect! This ... is a(n) {}.'.format(resp_labels[0]))
             text.draw()
             stim.draw()
             win.flip()
@@ -161,12 +161,17 @@ def draw_all_test(win, stim, text, resp_labels, boxes, cursor):
             
         elif cursor.isPressedIn(boxes[0], buttons=[0,1]):
             
-            result=1
+            result='A'
             pressed=True
         
         elif cursor.isPressedIn(boxes[1], buttons=[0,1]):
             
-            result=0
+            result='B'
             pressed=True
 
+        elif cursor.isPressedIn(boxes[2], buttons=[0,1]):
+            
+            result='C'
+            pressed=True
+            
     return result

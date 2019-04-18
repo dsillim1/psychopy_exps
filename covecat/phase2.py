@@ -8,16 +8,19 @@ n_blocks = range(1,3)
 # DEFINE CATEGORIES, STIM
 
 ## create list with all possible stim categories
-class_list = sorted(['A','C']*10)
+class_list = sorted(['A','C']*6)
 
-## create dictionary with corresponding stimulus values
+## create new dictionary with corresponding stimulus values
+
+dims = dims[:-4]
+rgb = rgb[:-4]
 
 if cnd==0: #control
-    dims=[]
-    rgb=[]
+    dims += [107, 107, 189, 189, 189, 230, 230, 230]
+    rgb +=[2.96, 3.88, 2.96, 3.88, 4.34, 2.96, 3.88, 4.34]
 else:
-    dim=[]
-    rgb=[]
+    dims += [45.5, 86.5, 189, 189, 189, 230, 230, 230] 
+    rgb += [4.34, 4.34, 2.96, 3.88, 4.34, 2.96, 3.88, 4.34]
 
 
 stim_dict = {'correct_category': class_list,
@@ -41,7 +44,7 @@ for block in n_blocks:
                 shading = stim_frame.loc[n_trials, 'rgb']
 
                 ## create stim
-                stim = visual.Rect(win, units='pix', width=shape, height=shape, fillColorSpace='rgb', lineColorSpace='rgb', fillColor=shading, lineColor=shading)
+                stim = visual.Rect(win, units='cm', width=shape, height=shape, fillColorSpace='rgb', lineColorSpace='rgb', fillColor=shading, lineColor=shading)
 
                 ## assign labels
                 correct = stim_frame.loc[n_trials, 'correct_category']
