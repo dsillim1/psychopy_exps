@@ -2,6 +2,7 @@
 from psychopy import core, event, gui
 import os
 import pandas as pd
+import random as rnd
 from time import strftime
 
 # COLLECT USER/EXPERIMENT METADATA
@@ -23,7 +24,7 @@ def prompt():
 
         data = pd.DataFrame(columns=['pnum','condition','phase','block','trial','category','item','result']) 
 
-        return [data, pnum, cnd]
+    return [data, pnum, cnd]
 
 # SAVE DATA TO CSV
 
@@ -51,11 +52,11 @@ def transition(win, instructions, data):
 
     instructions.setPos([0, 100])
 
-    if len(data) == 0:
+    if len(data)==0:
         instructions.setText(phase1)
-    elif len(data) < 25:
-        instructions.setText(phase2):
-    elif len(data) < 65:
+    elif len(data)<25:
+        instructions.setText(phase2)
+    elif len(data)<65:
         instructions.setText(test)
     else:
         instructions.setText(goodbye)
@@ -63,23 +64,21 @@ def transition(win, instructions, data):
     instructions.draw()
     win.flip()
 
-    resume = event.waitKeys(keyList=['space', 'escape'])
-    if resume[0][0] == 'escape':
+    resume=event.waitKeys(keyList=['space', 'escape'])
+    if resume[0][0]=='escape':
         win.close()
         core.quit()
 
 
-def draw_all(win, stim, text, resp_labels, boxes, cursor, feedback = True):
+def draw_all(win, stim, text, resp_labels, boxes, cursor):
 
-    pressed = False
-    #event.clearEvents()
-    #cursor.clickReset()
+    pressed=False
     
     text.setPos([0, 275])
     text.setText('Is the following ... a ... or ...?')
     text.draw()
 
-    xcord = [-250, 250]
+    xcord=[-250, 250]
     rnd.shuffle(xcord)
 
     for options in range(len(resp_labels)):
@@ -94,7 +93,9 @@ def draw_all(win, stim, text, resp_labels, boxes, cursor, feedback = True):
    
     win.flip()
 
-    while pressed == False:
+    while pressed==False:
+
+        text.setPos([0, 275])
         
         if event.getKeys(keyList='escape'):
             win.close()
@@ -102,30 +103,70 @@ def draw_all(win, stim, text, resp_labels, boxes, cursor, feedback = True):
             
         elif cursor.isPressedIn(boxes[0], buttons=[0,1]):
             
-            result = 1
+            result=1
 
-            if feedback == True:
+            text.setText('Correct! This ... is a(n) {}.'.format(resp_labels[0]))
+            text.draw()
+            stim.draw()
+            win.flip()
+            core.wait(3)
 
-                text.setText('Correct! This ... is a(n) {}.'.format(resp_labels[0]))
-                text.draw()
-                stim.draw()
-                win.flip()
-                core.wait(3)
-
-            pressed = True
+            pressed=True
         
         elif cursor.isPressedIn(boxes[1], buttons=[0,1]):
             
-            result = 0
+            result=0
 
-            if feedback == True:
+            text.setText('Inorrect! This ... is a(n) {}.'.format(resp_labels[0]))
+            text.draw()
+            stim.draw()
+            win.flip()
+            core.wait(3)
 
-                text.setText('Correct! This ... is a(n) {}.'.format(resp_labels[0]))
-                text.draw()
-                stim.draw()
-                win.flip()
-                core.wait(3)
+            pressed=True
 
-            pressed = True
+    return result
+
+
+def draw_all_test(win, stim, text, resp_labels, boxes, cursor):
+
+    pressed=False
+    
+    text.setPos([0, 275])
+    text.setText('Is the following ... a ..., ..., or ...?')
+    text.draw()
+
+    xcord=[-320, 0, 300]
+    rnd.shuffle(xcord)
+
+    for options in range(len(resp_labels)):
+        boxes[options].setPos([xcord[options], -300])
+        boxes[options].draw()
+        text.setText(resp_labels[options])
+        text.setPos([xcord[options], -300])
+        text.draw()
+
+    stim.setPos([0, 0])
+    stim.draw()
+   
+    win.flip()
+
+    while pressed==False:
+
+        text.setPos([0, 275])
+        
+        if event.getKeys(keyList='escape'):
+            win.close()
+            core.quit()
+            
+        elif cursor.isPressedIn(boxes[0], buttons=[0,1]):
+            
+            result=1
+            pressed=True
+        
+        elif cursor.isPressedIn(boxes[1], buttons=[0,1]):
+            
+            result=0
+            pressed=True
 
     return result

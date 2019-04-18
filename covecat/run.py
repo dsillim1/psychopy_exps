@@ -6,7 +6,8 @@ import functions as fx # local
 from psychopy import event, visual
 
 # SEED DATAFILE, QUERY CONDITION
-subject_dir = os.path.join(os.getcwd(), 'data')
+analysis_dir = os.path.join(os.getcwd(), 'analyses')
+subject_dir = os.path.join(analysis_dir, 'data')
 [data, pnum, cnd] = fx.prompt()
 
 # DEFINE PSYCHOPY ENVIRONMENT VARIABLES
@@ -20,6 +21,8 @@ rBox1 = visual.Rect(win, width=300, height=300)
 rBox2 = visual.Rect(win, width=300, height=300)
 boxes = [rBox1, rBox2]
 
-# EXEC PHASE SCRIPTS
-for i in ['phase1.py','phase2.py','test.py']:
-    execfile(i)
+# EXEC PHASE SCRIPTS ,'phase2.py','test.py'
+for phase in ['phase1.py']:
+    execfile(phase)
+
+fx.save_data(data, subject_dir, pnum, cnd)
