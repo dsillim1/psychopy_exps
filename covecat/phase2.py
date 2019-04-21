@@ -1,59 +1,48 @@
-# DISPLAY WELCOME AND GENERAL INSTRUCTION SCREEN
+# DISPLAY INSTRUCTION SCREEN
 fx.transition(win, text, data)
 
 # SET PHASE VARIABLE
 phase = 'classification_2'
-n_blocks = range(1,3)
+trial_n = 0
 
-# DEFINE CATEGORIES, STIM
+# DEFINE INCORRECT RESPONSE, LOAD STIM
+correct_resp = {'A':'ALPHA', 'C':'OMEGA'}
+incorrect_resp = {'A':'OMEGA', 'C':'ALPHA'}
 
-## create list with all possible stim categories
-class_list = sorted(['A','C']*6)
-
-## create new dictionary with corresponding stimulus values
-
-dims = dims[:-4]
-rgb = rgb[:-4]
+class_labels = incorrect_resp.values()
 
 if cnd==0: #control
-    dims += [107, 107, 189, 189, 189, 230, 230, 230]
-    rgb +=[2.96, 3.88, 2.96, 3.88, 4.34, 2.96, 3.88, 4.34]
+	cnd_dir = 'train2_c0'
 else:
-    dims += [45.5, 86.5, 189, 189, 189, 230, 230, 230] 
-    rgb += [4.34, 4.34, 2.96, 3.88, 4.34, 2.96, 3.88, 4.34]
+	cnd_dir = 'train2_c1'
 
-
-stim_dict = {'correct_category': class_list,
-             'incorrect_category': class_list[::-1],
-             'dimensions': dims,
-             'rgb': rgb}
-
-## dictionary to dataframe
-stim_frame = pd.DataFrame(stim_dict)
+train2_dir = os.path.join(stimuli_dir, cnd_dir)
+train2_stim = [img for img in os.listdir(train2_dir) if img.endswith('.png')]
 
 # ITERATE THROUGH BLOCKS
 for block in n_blocks:
-        
-	## shuffle rows in dataframe
-	stim_frame = stim_frame.sample(frac=1).reset_index(drop=True)
+		
+	## shuffle stim
+	random.shuffle(train2_stim)
 
-        for n_trials in range(stim_frame.shape[0]):
+	for trial in train2_stim:
 
-                ## assign item values
-                shape = stim_frame.loc[n_trials, 'dimensions']
-                shading = stim_frame.loc[n_trials, 'rgb']
+		trial_n += 1
 
-                ## create stim
-                stim = visual.Rect(win, units='cm', width=shape, height=shape, fillColorSpace='rgb', lineColorSpace='rgb', fillColor=shading, lineColor=shading)
+		random.shuffle(class_labels)
 
-                ## assign labels
-                correct = stim_frame.loc[n_trials, 'correct_category']
-                incorrect = stim_frame.loc[n_trials, 'incorrect_category']
-                resp_labels = [correct, incorrect]
+		## assign stim
+		image.setImage(os.path.join(train2_dir, trial))
 
-                # draw window, query response
-                result = fx.draw_all(win, stim, text, resp_labels, boxes, cursor)
-        
-                # update datafile w/trial response
-                data.loc[data.shape[0]] = [pnum, cnd, phase, block, n_trials+1, correct, str(shape) + str(shading), result] 
-        
+		## assign labels
+		file_name = trial.split('_')
+
+		correct = correct_resp[file_name[0]]
+		incorrect = incorrect_resp[file_name[0]]
+		resp_labels = [correct, incorrect]
+
+		## draw window, query response
+		result = fx.draw_all(win, image, text, resp_labels, class_labels, boxes, cursor)
+
+		## update datafile w/trial response
+		data.loc[data.shape[0]] = [pnum, cnd, phase, block, trial_n, file_name[0], file_name[1], result]
