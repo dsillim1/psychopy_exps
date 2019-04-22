@@ -72,6 +72,45 @@ old_dims = np.array(
     ], 
     dtype=float
 )
+
+# new old dims. Yeah, I know.
+old_dims = np.array( 
+    [
+        [2, 1], # As
+        [4, 1],
+        [2, 3],
+        [4, 3],
+        [5, 1], # new As, control
+        [5, 3],
+        [3, 5], # new As, exp
+        [4, 5],
+
+        [2, 8], # Bs
+        [2, 10],
+        [4, 8],
+        [4, 10],
+
+        [6, 1], # Cs
+        [8, 1],
+        [6, 3],
+        [8, 3],
+
+
+        [3, 2], # generalizations
+        [7, 2],
+        [3, 9],
+        [1, 6], # critical gens
+        [2, 6],
+        [3, 6],
+        [4, 6],
+        [7, 6],
+        [8, 6],
+    ],        
+    dtype=float
+)
+
+
+
 import matplotlib.pyplot as plt 
 plt.scatter(old_dims[:,0], old_dims[:,1])
 plt.show()
