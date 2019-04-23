@@ -9,6 +9,8 @@ from PIL import Image, ImageDraw
 # import AppKit
 import numpy as np
 
+import pandas as pd
+
 # get screen information; get resolution
 # x = [(screen.frame().size.width, screen.frame().size.height)
 #     for screen in AppKit.NSScreen.screens()]
@@ -36,79 +38,49 @@ old_dims = np.array(
         [1, 3],
         [3, 1],
         [3, 3],
-        [1, 4], # new As, control
-        [3, 4],
-        [4, 1], # new As, exp
-        [4, 3],
-
-        [1, 8], # Bs
-        [1, 10],
-        [3, 8],
-        [3, 10],
-
-        [8, 1], # Cs
-        [8, 3],
-        [8, 4],
-        [10, 1],
-        [10, 3],
-        [10, 4],
-
-        [2, 1], # generalizations
-        [2, 2],
-        [2, 3],
-        [9, 1],
-        [9, 2],
-        [9, 3],
-        [2, 8],
-        [2, 9],
-        [2, 10],
-        [1, 6], # critical gens
-        [2, 6],
-        [3, 6],
-        [8, 6],
-        [9, 6],
-        [10, 6],
-        
-    ], 
-    dtype=float
-)
-
-# new old dims. Yeah, I know.
-old_dims = np.array( 
-    [
-        [2, 1], # As
-        [4, 1],
-        [2, 3],
-        [4, 3],
-        [5, 1], # new As, control
+        [5, 2], # new As, control
         [5, 3],
-        [3, 5], # new As, exp
-        [4, 5],
+        [2, 5], # new As, exp
+        [3, 5],
 
         [2, 8], # Bs
         [2, 10],
         [4, 8],
         [4, 10],
 
-        [6, 1], # Cs
-        [8, 1],
-        [6, 3],
-        [8, 3],
+        [7, 1], # Cs
+        [9, 1],
+        [7, 3],
+        [9, 3],
 
-
-        [3, 2], # generalizations
-        [7, 2],
+        [1, 2], # GAs
+        [2, 1],
+        [2, 2],
+        [2, 3],
+        [3, 2], 
+        [2, 9], # GBs
+        [3, 8],
         [3, 9],
-        [1, 6], # critical gens
+        [3, 10],
+        [4, 9],
+        [7, 2], # GCs
+        [8, 1],
+        [8, 2],
+        [8, 3],
+        [9, 2],
+        [1, 6], # UL
         [2, 6],
         [3, 6],
         [4, 6],
-        [7, 6],
+        [7, 6], # UR
         [8, 6],
-    ],        
+        [9, 6],
+        [10, 6],
+        [8, 5], # BR
+        [9, 5],
+    ], 
     dtype=float
 )
-
 
 
 import matplotlib.pyplot as plt 
@@ -139,7 +111,28 @@ save = True
 res_w = lab_monitor
 
 # essentially deterimes the distribution of items
-cluster_values = [.05, 0, .05]
+# cluster_values = [.05, 0, .05]
+
+As = ['A_']*8
+Bs = ['B_']*4
+Cs = ['C_']*4
+
+GAs = ['GA_']*5
+GBs = ['GB_']*5
+GCs = ['GC_']*5
+
+
+ULs = ['UL_']*4 # upper left
+URs = ['UR_']*4
+BRs = ['BR_']*2
+
+
+letters = As + Bs + Cs + GAs + GBs + GCs + ULs + URs + BRs
+
+temp_dict = {'item_type':letters}
+
+frame = pd.DataFrame(temp_dict)
+
 
 ##_Run Stim Generation
 item_count = 1
@@ -186,8 +179,8 @@ if save == True:
             # save image
             if not os.path.exists(folder):
                 os.makedirs(folder)
-            print(folder + os.path.sep + str(int(old_dims[i,0])) + '-' + str(int(old_dims[i,1])) + '.png')
-            im.save(folder + os.path.sep + str(int(old_dims[i,0])) + '-' + str(int(old_dims[i,1])) + '.png')
+            print(folder + os.path.sep + frame.iat[i,0] + str(int(old_dims[i,0])) + '-' + str(int(old_dims[i,1])) + '.png')
+            im.save(folder + os.path.sep + frame.iat[i,0] +  str(int(old_dims[i,0])) + '-' + str(int(old_dims[i,1])) + '.png')
             select_count += 1
 
 
