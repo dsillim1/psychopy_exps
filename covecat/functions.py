@@ -57,9 +57,9 @@ def transition(win, instructions, data):
 
     if len(data)==0:
         instructions.setText(phase1)
-    elif len(data)<20: 
+    elif len(data)<25: 
         instructions.setText(phase2)
-    elif len(data)<45: 
+    elif len(data)<65: 
         instructions.setText(test)
     else:
         instructions.setText(goodbye)
